@@ -24,3 +24,29 @@ Código y diseño pensados para la comunidad.
 - [YouTube](https://www.youtube.com/@ZeroYTDF)  
 - [TikTok](https://www.tiktok.com/@yeik.br)  
 - [Twitch](https://www.twitch.tv/yeikollb)  
+#Delta Force Loadout Randomizer 🎲
+
+Fan page dedicated to **Delta Force** with a random loadout generator.
+A simple, minimalist project with its own style.
+
+---
+
+## 🔥 Features
+- 🎰 Operator, weapon, helmet, and vest randomizer
+- 🌗 Switch between dark and light themes
+- 🎵 Background music with pause or mute options
+- ⚡ Minimalist design with custom aesthetics
+- 📱 Direct links to social media
+
+---
+
+## 🌌 Created by Zero
+This project is part of a personal fan page.
+Code and design designed with the community in mind.
+
+---
+
+## 🌍 Connect with me
+- [YouTube](https://www.youtube.com/@ZeroYTDF)
+- [TikTok](https://www.tiktok.com/@yeik.br)
+- [Twitch](https://www.twitch.tv/yeikollb)
