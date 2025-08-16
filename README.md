@@ -21,6 +21,6 @@ Código y diseño pensados para la comunidad.
 ---
 
 ## 🌍 Conecta conmigo
-- [YouTube]([https://youtube.com](https://www.youtube.com/@ZeroYTDF))  
-- [TikTok]([https://tiktok.com](https://www.tiktok.com/@yeik.br))  
-- [Twitch]([https://twitch.tv](https://www.twitch.tv/yeikollb))  
+- [YouTube](https://www.youtube.com/@ZeroYTDF)  
+- [TikTok](https://www.tiktok.com/@yeik.br)  
+- [Twitch](https://www.twitch.tv/yeikollb)  
