@@ -14,7 +14,7 @@ Un proyecto simple, minimalista y con estilo propio.
 
 ---
 
-## 🌌 Created by Zero
+## 🌌 Creado por Zero
 Este proyecto es parte de una fanpage personal.  
 Código y diseño pensados para la comunidad.  
 
