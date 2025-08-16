@@ -5,7 +5,7 @@ Un proyecto simple, minimalista y con estilo propio.
 
 ---
 
-## 🔥 Features
+## 🔥 Caracteristicas
 - 🎰 Randomizer de operador, arma, casco y chaleco  
 - 🌗 Cambio entre tema oscuro y claro  
 - 🎵 Música de fondo con opción de pausar o silenciar  
