@@ -181,7 +181,6 @@
 
     const result=document.getElementById('result');
     const btn=document.getElementById('btn-spin');
-    const btnCopy=document.getElementById('btn-copy');
 
     async function spinAll(){
       btn.disabled=true;btn.textContent='Rolling… 🎲';
@@ -199,13 +198,6 @@
       btn.disabled=false;btn.textContent='Generate Loadout 🎰';
     }
     btn.addEventListener('click',spinAll);
-    btnCopy.addEventListener('click',()=> {
-      const txt=result.textContent?.trim()||'No result yet';
-      navigator.clipboard.writeText(txt).then(()=>{
-        btnCopy.textContent='Copied! ✅';
-        setTimeout(()=>btnCopy.textContent='Copy as text',1200);
-      })
-    });
     setTimeout(spinAll,600);
 
     // === THEME ===
@@ -229,5 +221,4 @@
   </script>
 </body>
 </html>
-</body>
-</html>
+
