@@ -16,6 +16,9 @@
       --muted: #9aa7a1;
       --accent: #1fe394;
       --shadow: 0 0 20px #16ff8633, inset 0 0 40px #16ff861a;
+
+      /* 👇 fondo imagen para tema oscuro */
+      --bg-image: url("assets/bg-dark.jpg");
     }
     [data-theme="light"] {
       --bg: #f3f4f6;
@@ -24,13 +27,24 @@
       --muted: #555;
       --neon: #009f5f;
       --accent: #00c980;
+
+      /* 👇 fondo imagen para tema claro */
+      --bg-image: url("assets/bg-light.jpg");
     }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
       font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial;
-      background: var(--bg);
+
+      /* 👇 color base + imagen fija que cubre toda la pantalla */
+      background-color: var(--bg);
+      background-image: var(--bg-image);
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: cover;
+      background-attachment: fixed;
+
       color:var(--text);
       display:flex;
       align-items:center;
@@ -295,13 +309,11 @@
     function celebrateOnceCentered(){
       if (!window.confetti) return;
 
-      // Centro de la grilla de slots
       const grid = document.querySelector('.grid') || document.body;
       const rect = grid.getBoundingClientRect();
       const x = (rect.left + rect.width / 2) / window.innerWidth;
       const y = (rect.top  + rect.height / 2) / window.innerHeight;
 
-      // Una sola explosión, menos partículas, duración corta
       confetti({
         particleCount: 28,
         startVelocity: 55,
@@ -365,3 +377,4 @@
   </script>
 </body>
 </html>
+
