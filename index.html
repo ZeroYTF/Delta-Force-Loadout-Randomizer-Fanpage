@@ -291,29 +291,25 @@
     const result = document.getElementById('result');
     const btn    = document.getElementById('btn-spin');
 
-    // ======== CONFETTI ========
-    function celebrate(){
+    // ======== CONFETTI (una explosión corta y centrada en los slots) ========
+    function celebrateOnceCentered(){
       if (!window.confetti) return;
-      const duration = 1200;
-      const end = Date.now() + duration;
 
-      (function frame(){
-        // izquierda
-        confetti({
-          particleCount: 45,
-          startVelocity: 45,
-          spread: 65,
-          origin: { x: Math.random() * 0.2 + 0.1, y: 0.2 }
-        });
-        // derecha
-        confetti({
-          particleCount: 45,
-          startVelocity: 45,
-          spread: 65,
-          origin: { x: 1 - (Math.random() * 0.2 + 0.1), y: 0.2 }
-        });
-        if (Date.now() < end) requestAnimationFrame(frame);
-      })();
+      // Centro de la grilla de slots
+      const grid = document.querySelector('.grid') || document.body;
+      const rect = grid.getBoundingClientRect();
+      const x = (rect.left + rect.width / 2) / window.innerWidth;
+      const y = (rect.top  + rect.height / 2) / window.innerHeight;
+
+      // Una sola explosión, menos partículas, duración corta
+      confetti({
+        particleCount: 28,
+        startVelocity: 55,
+        spread: 70,
+        ticks: 90,
+        scalar: 0.9,
+        origin: { x, y }
+      });
     }
 
     // ======== LOGICA ========
@@ -339,12 +335,12 @@
       btn.disabled = false;
       btn.textContent = 'Generate Loadout 🎰';
 
-      // 🎉 confeti cada vez que se genera
-      celebrate();
+      // 🎉 Confeti: una sola explosión corta al centro de los slots
+      celebrateOnceCentered();
     }
 
     btn.addEventListener('click', spinAll);
-    // Primer spin automático
+    // Primer spin automático (también dispara confeti)
     setTimeout(spinAll, 600);
 
     // === THEME ===
@@ -369,4 +365,3 @@
   </script>
 </body>
 </html>
-
