@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Delta Force Loadout Randomizer — Zero</title>
-  <!-- Font Awesome -->
+  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     :root {
@@ -17,7 +17,7 @@
       --accent: #1fe394;
       --shadow: 0 0 20px #16ff8633, inset 0 0 40px #16ff861a;
 
-      /* 👇 fondo imagen para tema oscuro */
+      
       --bg-image: url("assets/bg-dark.png");
     }
     [data-theme="light"] {
@@ -28,7 +28,7 @@
       --neon: #009f5f;
       --accent: #00c980;
 
-      /* 👇 fondo imagen para tema claro */
+      
       --bg-image: url("assets/bg-light.png");
     }
     *{box-sizing:border-box}
@@ -94,7 +94,7 @@
   <div class="app">
     <div class="header">
       <div class="brand">
-        <!-- Logo cambiado a imagen -->
+        
         <img class="logo" src="assets/logo-z.png" alt="Zero Logo">
         <div class="title">
           <h1>Delta Force Loadout Randomizer</h1>
@@ -147,7 +147,7 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <script>
-    // ======== DATA ========
+    
     const operators = [
       { name: 'Tempest', image: 'assets/Tempest.png' },
       { name: 'Dwolf', image: 'assets/Dwolf.png' },
@@ -268,7 +268,7 @@
       { name: 'Heavy', image: 'assets/Heavy.png' }
     ];
 
-    // ======== SLOTS ========
+    
     function buildStrip(el, items){
       el.innerHTML = '';
       const list = [...items, ...items, ...items];
@@ -306,7 +306,7 @@
     const result = document.getElementById('result');
     const btn    = document.getElementById('btn-spin');
 
-    // ======== CONFETTI ========
+    
     function celebrateOnceCentered(){
       if (!window.confetti) return;
       const grid = document.querySelector('.grid') || document.body;
@@ -324,7 +324,7 @@
       });
     }
 
-    // ======== LOGICA ========
+    
     async function spinAll(){
       btn.disabled = true;
       btn.textContent = 'Rolling… 🎲';
@@ -353,13 +353,13 @@
     btn.addEventListener('click', spinAll);
     setTimeout(spinAll, 600);
 
-    // === THEME ===
+    
     document.getElementById('btn-theme').addEventListener('click',()=>{
       if(document.body.dataset.theme==='light'){document.body.dataset.theme='';}
       else{document.body.dataset.theme='light';}
     });
 
-    // === MUSIC ===
+    
     const music    = document.getElementById('bg-music');
     const btnMusic = document.getElementById('btn-music');
     const btnMute  = document.getElementById('btn-mute');
