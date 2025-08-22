@@ -37,7 +37,6 @@
       margin:0;
       font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial;
 
-      /* 👇 color base + imagen fija que cubre toda la pantalla */
       background-color: var(--bg);
       background-image: var(--bg-image);
       background-repeat: no-repeat;
@@ -55,10 +54,13 @@
     .header{display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:18px}
     .brand{display:flex; align-items:center; gap:12px}
     .logo{
-      width:40px;height:40px;border-radius:12px;
-      border:1px solid var(--neon);box-shadow:0 0 12px #16ff8644;
-      display:grid;place-items:center;font-weight:800;
-      color:var(--bg);background:linear-gradient(135deg,var(--neon),#65ffd2)
+      width:48px;
+      height:48px;
+      border-radius:12px;
+      border:1px solid var(--neon);
+      box-shadow:0 0 12px #16ff8644;
+      display:block;
+      object-fit:contain;
     }
     .title h1{font-size:20px;margin:0; letter-spacing:.2px}
     .title p{margin:0;color:var(--muted);font-size:12px}
@@ -92,7 +94,8 @@
   <div class="app">
     <div class="header">
       <div class="brand">
-        <div class="logo">Z</div>
+        <!-- Logo cambiado a imagen -->
+        <img class="logo" src="assets/logo-z.png" alt="Zero Logo">
         <div class="title">
           <h1>Delta Force Loadout Randomizer</h1>
           <p>Dark + Neon style • by Zero</p>
@@ -141,7 +144,6 @@
     <source src="assets/old-habits.mp3" type="audio/mpeg">
   </audio>
 
-  <!-- Confetti (CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <script>
@@ -214,8 +216,7 @@
       { name: 'Uzi', image: 'assets/Uzi.png' },
       { name: 'Vector', image: 'assets/Vector.png' },
       { name: 'Vityaz', image: 'assets/Vityaz.png' },
-      { name: 'Vss', image: 'assets/Vss.png' },
-      { name: 'Ak12', image: 'assets/Ak12.png' }
+      { name: 'Vss', image: 'assets/Vss.png' }
     ];
     const helmets = [
       { name: 'Cap', image: 'assets/Cap.png' },
@@ -305,10 +306,9 @@
     const result = document.getElementById('result');
     const btn    = document.getElementById('btn-spin');
 
-    // ======== CONFETTI (una explosión corta y centrada en los slots) ========
+    // ======== CONFETTI ========
     function celebrateOnceCentered(){
       if (!window.confetti) return;
-
       const grid = document.querySelector('.grid') || document.body;
       const rect = grid.getBoundingClientRect();
       const x = (rect.left + rect.width / 2) / window.innerWidth;
@@ -347,12 +347,10 @@
       btn.disabled = false;
       btn.textContent = 'Generate Loadout 🎰';
 
-      // 🎉 Confeti: una sola explosión corta al centro de los slots
       celebrateOnceCentered();
     }
 
     btn.addEventListener('click', spinAll);
-    // Primer spin automático (también dispara confeti)
     setTimeout(spinAll, 600);
 
     // === THEME ===
@@ -377,4 +375,5 @@
   </script>
 </body>
 </html>
+
 
