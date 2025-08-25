@@ -147,17 +147,17 @@
   <script>
     
     const redWeapons = ["awm"]; 
-    const redHelmets = ["h70"];
-    const redVests   = ["ha-2"];
+const redHelmets = ["h70"];
+const redVests   = ["ha-2"];
 
-    let includeRed = false; 
+let includeRed = false; 
 
-    document.getElementById("btn-toggle-red").addEventListener("click", () => {
-      includeRed = !includeRed;
-      document.getElementById("btn-toggle-red").textContent = includeRed
-        ? "✅ Incluir Red Equipment"
-        : "🚫 Excluir Red Equipment";
-    });
+document.getElementById("btn-toggle-red").addEventListener("click", () => {
+  includeRed = !includeRed;
+  document.getElementById("btn-toggle-red").textContent = includeRed
+    ? "✅ Incluir Red Equipment"
+    : "🚫 Excluir Red Equipment";
+});
 
     const operators = [
       { name: 'Tempest', image: 'assets/Tempest.png' },
@@ -280,9 +280,9 @@
     ];
 
     function filterItems(list, redList) {
-      if (includeRed) return list;
-      return list.filter(item => !redList.includes(item.name.toLowerCase()));
-    }
+  if (includeRed) return list;
+  return list.filter(item => !redList.includes(item.name.toLowerCase()));
+}
 
     function buildStrip(el, items){
       el.innerHTML = '';
