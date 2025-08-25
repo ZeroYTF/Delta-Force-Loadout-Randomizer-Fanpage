@@ -17,7 +17,6 @@
       --accent: #1fe394;
       --shadow: 0 0 20px #16ff8633, inset 0 0 40px #16ff861a;
 
-      
       --bg-image: url("assets/bg-dark.png");
     }
     [data-theme="light"] {
@@ -28,7 +27,6 @@
       --neon: #009f5f;
       --accent: #00c980;
 
-      
       --bg-image: url("assets/bg-light.png");
     }
     *{box-sizing:border-box}
@@ -76,7 +74,7 @@
     .slot-strip{ position:absolute; left:0; top:0; width:100%; }
     .item{ display:grid; place-items:center; height:220px; }
     .item img{max-width:96%; max-height:96%; object-fit:contain; filter:drop-shadow(0 6px 16px #000000aa)}
-    .actions{display:flex; gap:12px; margin-top:16px; flex-wrap:wrap}
+    .actions{display:flex; gap:12px; margin-top:16px; flex-wrap:wrap; align-items:center;}
     .btn{ background:linear-gradient(135deg,#0e1412,#0a0f0d); border:1px solid #163b2c; color:var(--text); padding:12px 16px; border-radius:14px; cursor:pointer; font-weight:700; letter-spacing:.2px; transition:transform .08s ease}
     .btn.primary{border-color:#21f09a; background:radial-gradient(120px 80px at 30% 20%, #13251e 0%, #0b1210 60%);}
     .btn:hover{transform:translateY(-1px)}
@@ -94,7 +92,6 @@
   <div class="app">
     <div class="header">
       <div class="brand">
-        
         <img class="logo" src="assets/logo-z.png" alt="Zero Logo">
         <div class="title">
           <h1>Delta Force Loadout Randomizer</h1>
@@ -127,6 +124,7 @@
     </div>
     <div class="actions">
       <button class="btn primary" id="btn-spin">Generate Loadout 🎰</button>
+      <button class="btn" id="btn-toggle-red">✅ Incluir Red Equipment</button>
       <span class="small">Tip: press again for a new combination.</span>
     </div>
     <div class="result" id="result"></div>
@@ -147,7 +145,20 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <script>
-    
+    // 🔴 Aquí defines qué ítems son "Red Equipment"
+    const redWeapons = ["Bow", "Doublebarrel"]; // ejemplo
+    const redHelmets = ["Mask-1"];
+    const redVests   = ["Warrior"];
+
+    let includeRed = true; // estado inicial
+
+    document.getElementById("btn-toggle-red").addEventListener("click", () => {
+      includeRed = !includeRed;
+      document.getElementById("btn-toggle-red").textContent = includeRed
+        ? "✅ Incluir Red Equipment"
+        : "🚫 Excluir Red Equipment";
+    });
+
     const operators = [
       { name: 'Tempest', image: 'assets/Tempest.png' },
       { name: 'Dwolf', image: 'assets/Dwolf.png' },
@@ -268,7 +279,11 @@
       { name: 'Heavy', image: 'assets/Heavy.png' }
     ];
 
-    
+    function filterItems(list, redList) {
+      if (includeRed) return list;
+      return list.filter(item => !redList.includes(item.name));
+    }
+
     function buildStrip(el, items){
       el.innerHTML = '';
       const list = [...items, ...items, ...items];
@@ -298,6 +313,7 @@
     const stripWeap = document.getElementById('strip-weapon');
     const stripHelm = document.getElementById('strip-helmet');
     const stripVest = document.getElementById('strip-vest');
+
     buildStrip(stripOp,operators);
     buildStrip(stripWeap,weapons);
     buildStrip(stripHelm,helmets);
@@ -306,7 +322,6 @@
     const result = document.getElementById('result');
     const btn    = document.getElementById('btn-spin');
 
-    
     function celebrateOnceCentered(){
       if (!window.confetti) return;
       const grid = document.querySelector('.grid') || document.body;
@@ -324,25 +339,28 @@
       });
     }
 
-    
     async function spinAll(){
       btn.disabled = true;
       btn.textContent = 'Rolling… 🎲';
 
+      const weapList = filterItems(weapons, redWeapons);
+      const helmList = filterItems(helmets, redHelmets);
+      const vestList = filterItems(vests, redVests);
+
       const iOp   = Math.floor(Math.random()*operators.length);
-      const iWeap = Math.floor(Math.random()*weapons.length);
-      const iHelm = Math.floor(Math.random()*helmets.length);
-      const iVest = Math.floor(Math.random()*vests.length);
+      const iWeap = Math.floor(Math.random()*weapList.length);
+      const iHelm = Math.floor(Math.random()*helmList.length);
+      const iVest = Math.floor(Math.random()*vestList.length);
 
       await Promise.all([
         spinTo(stripOp,operators,iOp,1400),
-        spinTo(stripWeap,weapons,iWeap,1600),
-        spinTo(stripHelm,helmets,iHelm,1750),
-        spinTo(stripVest,vests,iVest,1900),
+        spinTo(stripWeap,weapList,iWeap,1600),
+        spinTo(stripHelm,helmList,iHelm,1750),
+        spinTo(stripVest,vestList,iVest,1900),
       ]);
 
       result.innerHTML =
-        `<div><b>Operator:</b> ${operators[iOp].name} | <b>Weapon:</b> ${weapons[iWeap].name} | <b>Helmet:</b> ${helmets[iHelm].name} | <b>Vest:</b> ${vests[iVest].name}</div>`;
+        `<div><b>Operator:</b> ${operators[iOp].name} | <b>Weapon:</b> ${weapList[iWeap].name} | <b>Helmet:</b> ${helmList[iHelm].name} | <b>Vest:</b> ${vestList[iVest].name}</div>`;
 
       btn.disabled = false;
       btn.textContent = 'Generate Loadout 🎰';
@@ -353,13 +371,13 @@
     btn.addEventListener('click', spinAll);
     setTimeout(spinAll, 600);
 
-    
+    // 🌙 Theme toggle
     document.getElementById('btn-theme').addEventListener('click',()=>{
       if(document.body.dataset.theme==='light'){document.body.dataset.theme='';}
       else{document.body.dataset.theme='light';}
     });
 
-    
+    // 🎵 Music controls
     const music    = document.getElementById('bg-music');
     const btnMusic = document.getElementById('btn-music');
     const btnMute  = document.getElementById('btn-mute');
@@ -375,5 +393,6 @@
   </script>
 </body>
 </html>
+
 
 
