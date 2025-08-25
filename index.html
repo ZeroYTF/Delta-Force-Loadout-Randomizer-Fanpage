@@ -86,6 +86,18 @@
     .controls{display:flex; gap:12px; align-items:center;}
     @media (max-width: 900px){ .grid{grid-template-columns:repeat(2,1fr)} }
     @media (max-width: 520px){ .grid{grid-template-columns:1fr} }
+
+    /* ESTADOS DEL BOTÓN RED */
+    #btn-toggle-red.on{
+      border-color:#21f09a;
+      background:radial-gradient(120px 80px at 30% 20%, #13251e 0%, #0b1210 60%);
+      box-shadow:0 0 10px #16ff8626, inset 0 0 20px #16ff861a;
+    }
+    #btn-toggle-red.off{
+      border-color:#5a1c1c;
+      background:radial-gradient(120px 80px at 30% 20%, #261416 0%, #12090b 60%);
+      box-shadow:0 0 10px #ff274026, inset 0 0 20px #ff27401a;
+    }
   </style>
 </head>
 <body>
@@ -124,7 +136,7 @@
     </div>
     <div class="actions">
       <button class="btn primary" id="btn-spin">Generate Loadout 🎰</button>
-      <button class="btn" id="btn-toggle-red">✅ Incluir Red Equipment</button>
+      <button class="btn off" id="btn-toggle-red">🚫 Excluyendo Red Equipment</button>
       <span class="small">Tip: press again for a new combination.</span>
     </div>
     <div class="result" id="result"></div>
@@ -145,20 +157,15 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <script>
-    
+    /* === LISTAS ROJAS (en minúsculas) === */
     const redWeapons = ["awm"]; 
-const redHelmets = ["h70"];
-const redVests   = ["ha-2"];
+    const redHelmets = ["h70"];
+    const redVests   = ["ha-2"];
 
-let includeRed = false; 
+    /* Estado: incluir rojos o no */
+    let includeRed = false;
 
-document.getElementById("btn-toggle-red").addEventListener("click", () => {
-  includeRed = !includeRed;
-  document.getElementById("btn-toggle-red").textContent = includeRed
-    ? "✅ Incluir Red Equipment"
-    : "🚫 Excluir Red Equipment";
-});
-
+    /* Datos */
     const operators = [
       { name: 'Tempest', image: 'assets/Tempest.png' },
       { name: 'Dwolf', image: 'assets/Dwolf.png' },
@@ -279,12 +286,17 @@ document.getElementById("btn-toggle-red").addEventListener("click", () => {
       { name: 'Heavy', image: 'assets/Heavy.png' }
     ];
 
+    /* Helpers */
     function filterItems(list, redList) {
-  if (includeRed) return list;
-  return list.filter(item => !redList.includes(item.name.toLowerCase()));
-}
+      if (includeRed) return list;
+      return list.filter(item => !redList.includes(item.name.toLowerCase()));
+    }
 
     function buildStrip(el, items){
+      // Reinicia posición para evitar saltos visuales si estaba en medio de un spin
+      el.style.transition = 'none';
+      el.style.transform = 'translateY(0px)';
+
       el.innerHTML = '';
       const list = [...items, ...items, ...items];
       list.forEach(({image, name})=>{
@@ -295,6 +307,7 @@ document.getElementById("btn-toggle-red").addEventListener("click", () => {
       });
       el.style.height = `${list.length * 220}px`;
     }
+
     function spinTo(el, items, index, duration=1600){
       const itemH=220;
       const cycles=2+Math.floor(Math.random()*2);
@@ -309,15 +322,47 @@ document.getElementById("btn-toggle-red").addEventListener("click", () => {
       },duration+20));
     }
 
+    /* Refs a strips */
     const stripOp   = document.getElementById('strip-operator');
     const stripWeap = document.getElementById('strip-weapon');
     const stripHelm = document.getElementById('strip-helmet');
     const stripVest = document.getElementById('strip-vest');
 
-    buildStrip(stripOp,operators);
-    buildStrip(stripWeap,weapons);
-    buildStrip(stripHelm,helmets);
-    buildStrip(stripVest,vests);
+    /* Listas activas (filtradas) que SIEMPRE se usan para render y spin */
+    let weapList = [];
+    let helmList = [];
+    let vestList = [];
+
+    function refreshActiveLists(){
+      weapList = filterItems(weapons, redWeapons);
+      helmList = filterItems(helmets, redHelmets);
+      vestList = filterItems(vests, redVests);
+    }
+
+    function rebuildAllStrips(){
+      buildStrip(stripOp,   operators);
+      buildStrip(stripWeap, weapList);
+      buildStrip(stripHelm, helmList);
+      buildStrip(stripVest, vestList);
+    }
+
+    /* Botón Red: texto + color según estado */
+    function updateRedButton(){
+      const b = document.getElementById('btn-toggle-red');
+      b.classList.remove('on','off');
+      if(includeRed){
+        b.classList.add('on');
+        b.textContent = '✅ Incluyendo Red Equipment';
+      } else {
+        b.classList.add('off');
+        b.textContent = '🚫 Excluyendo Red Equipment';
+      }
+    }
+
+    /* Inicialización */
+    refreshActiveLists();
+    rebuildAllStrips();
+    updateRedButton();
 
     const result = document.getElementById('result');
     const btn    = document.getElementById('btn-spin');
@@ -343,20 +388,17 @@ document.getElementById("btn-toggle-red").addEventListener("click", () => {
       btn.disabled = true;
       btn.textContent = 'Rolling… 🎲';
 
-      const weapList = filterItems(weapons, redWeapons);
-      const helmList = filterItems(helmets, redHelmets);
-      const vestList = filterItems(vests, redVests);
-
+      // Usar SIEMPRE las listas activas (coinciden con lo que está renderizado)
       const iOp   = Math.floor(Math.random()*operators.length);
       const iWeap = Math.floor(Math.random()*weapList.length);
       const iHelm = Math.floor(Math.random()*helmList.length);
       const iVest = Math.floor(Math.random()*vestList.length);
 
       await Promise.all([
-        spinTo(stripOp,operators,iOp,1400),
-        spinTo(stripWeap,weapList,iWeap,1600),
-        spinTo(stripHelm,helmList,iHelm,1750),
-        spinTo(stripVest,vestList,iVest,1900),
+        spinTo(stripOp,  operators, iOp,  1400),
+        spinTo(stripWeap,weapList,  iWeap,1600),
+        spinTo(stripHelm,helmList,  iHelm,1750),
+        spinTo(stripVest,vestList,  iVest,1900),
       ]);
 
       result.innerHTML =
@@ -368,16 +410,16 @@ document.getElementById("btn-toggle-red").addEventListener("click", () => {
       celebrateOnceCentered();
     }
 
-    btn.addEventListener('click', spinAll);
+    document.getElementById('btn-spin').addEventListener('click', spinAll);
     setTimeout(spinAll, 600);
 
-   
+    /* Tema */
     document.getElementById('btn-theme').addEventListener('click',()=>{
       if(document.body.dataset.theme==='light'){document.body.dataset.theme='';}
       else{document.body.dataset.theme='light';}
     });
 
-    
+    /* Música */
     const music    = document.getElementById('bg-music');
     const btnMusic = document.getElementById('btn-music');
     const btnMute  = document.getElementById('btn-mute');
@@ -390,9 +432,20 @@ document.getElementById("btn-toggle-red").addEventListener("click", () => {
       music.muted=!music.muted;
       btnMute.textContent=music.muted?'🔈':'🔇';
     });
+
+    /* Toggle Red */
+    document.getElementById("btn-toggle-red").addEventListener("click", () => {
+      includeRed = !includeRed;
+      updateRedButton();
+      refreshActiveLists();
+      rebuildAllStrips();
+      // Opcional: hace un spin rápido para mostrar el cambio
+      // spinAll();
+    });
   </script>
 </body>
 </html>
+
 
 
 
