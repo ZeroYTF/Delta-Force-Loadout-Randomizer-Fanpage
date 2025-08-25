@@ -145,12 +145,12 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <script>
-    // 🔴 Aquí defines qué ítems son "Red Equipment"
-    const redWeapons = ["Bow", "Doublebarrel"]; // ejemplo
-    const redHelmets = ["Mask-1"];
-    const redVests   = ["Warrior"];
+    
+    const redWeapons = ["Awm.png"]; 
+    const redHelmets = ["H70.png"];
+    const redVests   = ["Ha-2.png"];
 
-    let includeRed = true; // estado inicial
+    let includeRed = true; 
 
     document.getElementById("btn-toggle-red").addEventListener("click", () => {
       includeRed = !includeRed;
@@ -371,13 +371,13 @@
     btn.addEventListener('click', spinAll);
     setTimeout(spinAll, 600);
 
-    // 🌙 Theme toggle
+   
     document.getElementById('btn-theme').addEventListener('click',()=>{
       if(document.body.dataset.theme==='light'){document.body.dataset.theme='';}
       else{document.body.dataset.theme='light';}
     });
 
-    // 🎵 Music controls
+    
     const music    = document.getElementById('bg-music');
     const btnMusic = document.getElementById('btn-music');
     const btnMute  = document.getElementById('btn-mute');
