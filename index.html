@@ -281,7 +281,7 @@
 
     function filterItems(list, redList) {
       if (includeRed) return list;
-      return list.filter(item => !redList.includes(item.name));
+      return list.filter(item => !redList.includes(item.name.toLowerCase()));
     }
 
     function buildStrip(el, items){
